@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="荷包蛋官网，荷包蛋 · 鹅鸭杀全能辅助，全网最强王者归来。" />
+  <title>荷包蛋官网 | 荷包蛋 · 鹅鸭杀全能辅助</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --bg-deep: #090912;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-strong: rgba(255, 255, 255, 0.13);
+      --line: rgba(255, 225, 156, 0.17);
+      --line-strong: rgba(245, 166, 35, 0.52);
+      --text: #fff7e3;
+      --muted: #c6bda8;
+      --orange: #f5a623;
+      --orange-2: #ff7a22;
+      --gold: #ffe39a;
+      --green: #66ff9a;
+      --red: #ff5f5f;
+      --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --container: min(1180px, calc(100% - 40px));
+      --ease: cubic-bezier(.2, .8, .2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 98px;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 7%, rgba(245, 166, 35, 0.32), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(255, 122, 34, 0.18), transparent 32%),
+        linear-gradient(135deg, var(--bg-deep) 0%, var(--bg) 48%, #11111f 100%);
+      font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255, 227, 154, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 227, 154, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, black 0%, rgba(0, 0, 0, .72) 45%, transparent 92%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .particle-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .container {
+      width: var(--container);
+      margin: 0 auto;
+    }
+
+    .glass {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.045));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px) saturate(1.2);
+      -webkit-backdrop-filter: blur(22px) saturate(1.2);
+    }
+
+    .site-header {
+      position: fixed;
+      top: 16px;
+      left: 0;
+      right: 0;
+      z-index: 80;
+    }
+
+    .nav-shell {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 11px 14px 11px 18px;
+      border-radius: 999px;
+    }
+
+    .brand {
+      min-width: max-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 950;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #221300;
+      background:
+        radial-gradient(circle at 36% 28%, #fff8c8 0 16%, transparent 17%),
+        radial-gradient(circle at 60% 62%, #ff8b1c 0 23%, transparent 24%),
+        linear-gradient(135deg, #fff2a8, var(--orange) 58%, var(--orange-2));
+      box-shadow: 0 0 32px rgba(245, 166, 35, 0.55);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      transition: color .25s var(--ease), background .25s var(--ease), transform .25s var(--ease);
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(245, 166, 35, 0.13);
+      transform: translateY(-1px);
+    }
+
+    .nav-links .shop-link {
+      color: #241300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      box-shadow: 0 12px 28px rgba(245, 166, 35, .28);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-toggle,
+    .nav-cta,
+    .btn,
+    .chip-button,
+    .float-main,
+    .float-close,
+    .perf-toggle,
+    .faq-q {
+      border: 0;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .mobile-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      color: var(--gold);
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(245, 166, 35, .18);
+    }
+
+    .nav-cta {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: #241300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      box-shadow: 0 15px 34px rgba(245, 166, 35, .34);
+      font-weight: 950;
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+    }
+
+    .nav-cta:hover,
+    .btn:hover,
+    .chip-button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 46px rgba(245, 166, 35, .32);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 132px 0 78px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(350px, .95fr);
+      align-items: center;
+      gap: 54px;
+    }
+
+    .hero h1 {
+      max-width: 820px;
+      color: transparent;
+      background: linear-gradient(120deg, #fff8de 0%, var(--gold) 28%, var(--orange) 62%, #ff7426 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      font-size: clamp(44px, 7vw, 84px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      margin-bottom: 22px;
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      color: #ffe2a6;
+      font-size: clamp(18px, 2.1vw, 25px);
+      line-height: 1.72;
+      font-weight: 850;
+      margin-bottom: 12px;
+    }
+
+    .hero-slogan {
+      margin-bottom: 34px;
+      color: var(--gold);
+      font-size: clamp(16px, 1.7vw, 21px);
+      line-height: 1.55;
+      font-weight: 950;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      min-height: 56px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 24px;
+      border-radius: 17px;
+      font-size: 16px;
+      font-weight: 950;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+    }
+
+    .btn::after,
+    .feature-card::after,
+    .device-card::after,
+    .download-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.18) 42%, transparent 58%);
+      transform: translateX(-120%);
+      transition: transform .62s var(--ease);
+    }
+
+    .btn:hover::after,
+    .feature-card:hover::after,
+    .device-card:hover::after,
+    .download-card:hover::after {
+      transform: translateX(120%);
+    }
+
+    .btn-primary {
+      color: #221300;
+      background: linear-gradient(135deg, var(--gold), var(--orange) 58%, var(--orange-2));
+      box-shadow: 0 18px 42px rgba(245, 166, 35, .34);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: rgba(255, 255, 255, .075);
+      border: 1px solid rgba(245, 166, 35, .28);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .tag {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 13px;
+      border-radius: 999px;
+      color: #ffe8ad;
+      background: rgba(245, 166, 35, .1);
+      border: 1px solid rgba(245, 166, 35, .18);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .domain-line {
+      max-width: 620px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .domain-line a {
+      color: var(--gold);
+      font-weight: 950;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 570px;
+      border-radius: 40px;
+      padding: 18px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .hero-visual::before {
+      content: "";
+      position: absolute;
+      inset: -45%;
+      background: conic-gradient(from 130deg, transparent, rgba(245, 166, 35, .5), transparent, rgba(255, 122, 34, .36), transparent);
+      animation: spin 8s linear infinite;
+      z-index: -1;
+    }
+
+    .phone-screen {
+      height: 534px;
+      border-radius: 31px;
+      padding: 22px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(rgba(0, 0, 0, .02), rgba(0, 0, 0, .68)),
+        radial-gradient(circle at 50% 25%, rgba(255, 214, 94, .22), transparent 34%),
+        #10101b;
+      border: 1px solid rgba(255, 225, 156, .18);
+      box-shadow: inset 0 0 42px rgba(245, 166, 35, .09);
+    }
+
+    .dynamic-island {
+      width: 174px;
+      height: 39px;
+      margin: 0 auto 28px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, .78);
+      border: 1px solid rgba(245, 166, 35, .22);
+      box-shadow: inset 0 0 22px rgba(245, 166, 35, .12), 0 0 28px rgba(245, 166, 35, .16);
+    }
+
+    .hud-head,
+    .hud-row,
+    .mini-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hud-head {
+      margin-bottom: 18px;
+    }
+
+    .hud-head strong {
+      font-size: 22px;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 24px var(--green);
+    }
+
+    .hud-panel {
+      padding: 18px;
+      border-radius: 21px;
+      margin-bottom: 14px;
+      background: rgba(255, 255, 255, .09);
+      border: 1px solid rgba(245, 166, 35, .16);
+      backdrop-filter: blur(18px);
+    }
+
+    .hud-row {
+      margin-bottom: 13px;
+      color: #ffe8ad;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .progress {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .13);
+    }
+
+    .progress span {
+      display: block;
+      width: var(--value, 76%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold), var(--orange));
+      box-shadow: 0 0 18px rgba(245, 166, 35, .42);
+      animation: pulsebar 2.8s ease-in-out infinite;
+    }
+
+    .floating-console {
+      position: absolute;
+      right: 22px;
+      bottom: 32px;
+      width: 230px;
+      padding: 15px;
+      border-radius: 24px;
+      background: rgba(10, 10, 18, .74);
+      border: 1px solid rgba(245, 166, 35, .2);
+      box-shadow: 0 22px 56px rgba(0,0,0,.45);
+      backdrop-filter: blur(18px);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .console-row {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff2cc;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .mini-map {
+      position: absolute;
+      left: 24px;
+      bottom: 38px;
+      width: 132px;
+      height: 132px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 24% 32%, rgba(245,166,35,.92) 0 4px, transparent 5px),
+        radial-gradient(circle at 62% 48%, rgba(102,255,154,.82) 0 4px, transparent 5px),
+        radial-gradient(circle at 76% 72%, rgba(255,95,95,.88) 0 4px, transparent 5px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        rgba(0,0,0,.38);
+      background-size: auto, auto, auto, 24px 24px, 24px 24px, auto;
+      border: 1px solid rgba(245,166,35,.2);
+    }
+
+    section {
+      position: relative;
+      padding: 92px 0;
+    }
+
+    .section-head {
+      max-width: 800px;
+      margin-bottom: 34px;
+    }
+
+    .section-head.center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.86;
+    }
+
+    .shop-ribbon {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 22px;
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      margin-top: -24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .shop-ribbon::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(245,166,35,.2), transparent 44%, rgba(255,122,34,.14));
+      pointer-events: none;
+    }
+
+    .shop-ribbon > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .shop-ribbon h2 {
+      font-size: clamp(26px, 3.4vw, 42px);
+      line-height: 1.18;
+      margin-bottom: 10px;
+    }
+
+    .shop-ribbon p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .device-grid,
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .device-card,
+    .download-card,
+    .feature-card,
+    .service-card,
+    .faq-item,
+    .contact-card {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .075);
+      border: 1px solid rgba(255, 225, 156, .15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: transform .28s var(--ease), border-color .28s var(--ease), box-shadow .28s var(--ease), background .28s var(--ease);
+    }
+
+    .device-card:hover,
+    .download-card:hover,
+    .feature-card:hover,
+    .service-card:hover,
+    .contact-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--line-strong);
+      box-shadow: 0 26px 70px rgba(245, 166, 35, .15);
+      background: rgba(255, 255, 255, .105);
+    }
+
+    .device-card {
+      min-height: 274px;
+      padding: 30px;
+      border-radius: var(--radius-xl);
+    }
+
+    .icon-badge {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 19px;
+      color: #221300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      box-shadow: 0 15px 34px rgba(245, 166, 35, .25);
+      font-size: 25px;
+    }
+
+    .device-card h3,
+    .download-card h3,
+    .contact-card h3 {
+      font-size: 24px;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    .device-card p,
+    .download-card p,
+    .service-card p,
+    .contact-card p {
+      color: var(--muted);
+      line-height: 1.82;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .pill {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: #ffe8ad;
+      background: rgba(245, 166, 35, .1);
+      border: 1px solid rgba(245, 166, 35, .16);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .features-shell {
+      padding: 16px;
+      border-radius: var(--radius-xl);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      min-height: 188px;
+      padding: 20px;
+      border-radius: var(--radius-lg);
+    }
+
+    .feature-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 15px;
+      color: var(--gold);
+      background: rgba(245, 166, 35, .12);
+      border: 1px solid rgba(245, 166, 35, .2);
+      font-size: 21px;
+    }
+
+    .feature-card h3 {
+      font-size: 17px;
+      line-height: 1.36;
+      margin-bottom: 9px;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.76;
+    }
+
+    .features-grid.collapsed .is-extra {
+      display: none;
+    }
+
+    .more-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .service-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, .8fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .service-main {
+      padding: 34px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(245,166,35,.18), rgba(255,122,34,.08)),
+        rgba(255,255,255,.07);
+      border: 1px solid rgba(245,166,35,.2);
+    }
+
+    .service-main h2 {
+      font-size: clamp(30px, 3.3vw, 46px);
+      line-height: 1.18;
+      margin-bottom: 18px;
+    }
+
+    .service-main p {
+      color: var(--muted);
+      line-height: 1.92;
+    }
+
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, .18);
+      border: 1px solid rgba(245,166,35,.16);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--gold);
+      font-size: 25px;
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .service-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .service-card {
+      padding: 20px;
+      border-radius: 19px;
+    }
+
+    .service-card strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 17px;
+    }
+
+    .download-card {
+      padding: 28px;
+      border-radius: var(--radius-xl);
+    }
+
+    .version-number {
+      color: var(--gold);
+      font-size: clamp(44px, 5vw, 66px);
+      font-weight: 950;
+      line-height: 1;
+      margin: 12px 0;
+    }
+
+    .card-url {
+      display: inline-flex;
+      margin: 16px 0 20px;
+      color: var(--gold);
+      font-weight: 950;
+      line-height: 1.6;
+      word-break: break-all;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .contact-card {
+      padding: 28px;
+      border-radius: var(--radius-xl);
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .contact-row {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(245,166,35,.13);
+      color: #ffe9b5;
+      font-weight: 850;
+    }
+
+    .chip-button {
+      min-height: 34px;
+      padding: 0 11px;
+      border-radius: 999px;
+      color: #221300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      font-size: 13px;
+      font-weight: 950;
+      white-space: nowrap;
+      transition: transform .24s var(--ease), box-shadow .24s var(--ease);
+    }
+
+    .faq-list {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .faq-item {
+      border-radius: 18px;
+    }
+
+    .faq-q {
+      width: 100%;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 22px;
+      color: var(--text);
+      background: transparent;
+      text-align: left;
+      font-size: 16px;
+      font-weight: 950;
+    }
+
+    .faq-q span:last-child {
+      color: var(--gold);
+      font-size: 20px;
+      transition: transform .24s var(--ease);
+    }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .28s var(--ease);
+    }
+
+    .faq-a p {
+      padding: 0 22px 20px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 190px;
+    }
+
+    .faq-item.open .faq-q span:last-child {
+      transform: rotate(180deg);
+    }
+
+    .floating-tools {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 90;
+      display: grid;
+      gap: 12px;
+      justify-items: end;
+    }
+
+    .perf-toggle {
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 999px;
+      color: #ffe9b5;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(245,166,35,.18);
+      backdrop-filter: blur(16px);
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+
+    .float-panel {
+      width: min(360px, calc(100vw - 32px));
+      display: none;
+      padding: 16px;
+      border-radius: 24px;
+    }
+
+    .float-panel.open {
+      display: block;
+      animation: panelIn .24s var(--ease) both;
+    }
+
+    .float-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .float-head strong {
+      font-size: 18px;
+    }
+
+    .float-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+    }
+
+    .float-section {
+      padding: 13px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(245,166,35,.13);
+      margin-bottom: 10px;
+    }
+
+    .float-section h4 {
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    .float-links {
+      display: grid;
+      gap: 8px;
+    }
+
+    .float-links a,
+    .float-links button {
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 12px;
+      border-radius: 13px;
+      color: #ffe9b5;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(245,166,35,.12);
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .float-main {
+      min-height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-radius: 999px;
+      color: #221300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      box-shadow: 0 18px 44px rgba(245,166,35,.32);
+      font-weight: 950;
+      animation: glowPulse 2.8s ease-in-out infinite;
+    }
+
+    .site-footer {
+      padding: 34px 0 46px;
+      border-top: 1px solid rgba(245,166,35,.14);
+      color: var(--muted);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .footer-grid strong {
+      color: var(--text);
+    }
+
+    .footer-grid p {
+      margin-top: 8px;
+      line-height: 1.78;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 16px;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+
+    .disclaimer {
+      grid-column: 1 / -1;
+      color: #9f9788;
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .copy-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 120;
+      transform: translate(-50%, 24px);
+      opacity: 0;
+      pointer-events: none;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-radius: 999px;
+      color: #221300;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+      font-weight: 950;
+      transition: .25s var(--ease);
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal.visible {
+      animation: revealUp .62s var(--ease) both;
+    }
+
+    body.low-power * {
+      animation: none !important;
+      transition-duration: .12s !important;
+    }
+
+    body.low-power .particle-canvas {
+      opacity: .2;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 18px 44px rgba(245,166,35,.32); }
+      50% { box-shadow: 0 18px 58px rgba(245,166,35,.52); }
+    }
+
+    @keyframes pulsebar {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.25); }
+    }
+
+    @keyframes panelIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes revealUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 1080px) {
+      .mobile-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 20px;
+        right: 20px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        border-radius: 24px;
+        background: rgba(12, 12, 22, .94);
+        border: 1px solid rgba(245,166,35,.18);
+        backdrop-filter: blur(22px);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .hero-grid,
+      .service-layout,
+      .shop-ribbon {
+        grid-template-columns: 1fr;
+      }
+
+      .shop-ribbon .btn {
+        width: max-content;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --container: min(100% - 28px, 1180px);
+      }
+
+      .site-header {
+        top: 10px;
+      }
+
+      .nav-shell {
+        min-height: 60px;
+        padding: 8px 10px;
+        border-radius: 22px;
+      }
+
+      .brand {
+        font-size: 14px;
+        gap: 9px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .nav-cta {
+        min-height: 38px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 116px 0 58px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .hero-actions .btn,
+      .shop-ribbon .btn {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 488px;
+        padding: 14px;
+        border-radius: 30px;
+      }
+
+      .phone-screen {
+        height: 456px;
+        border-radius: 24px;
+        padding: 18px;
+      }
+
+      .dynamic-island {
+        width: 142px;
+        height: 34px;
+        margin-bottom: 22px;
+      }
+
+      .mini-map {
+        display: none;
+      }
+
+      .floating-console {
+        left: 18px;
+        right: 18px;
+        width: auto;
+        bottom: 24px;
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .device-grid,
+      .features-grid,
+      .download-grid,
+      .contact-grid,
+      .stats-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: auto;
+      }
+
+      .service-main,
+      .device-card,
+      .download-card,
+      .contact-card,
+      .shop-ribbon {
+        padding: 22px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        justify-content: flex-start;
+      }
+
+      .floating-tools {
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .nav-cta {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 39px;
+      }
+
+      .btn {
+        min-height: 52px;
+        padding: 0 18px;
+      }
+    }
+  </style>
+</head>
+<body class="no-js">
+  <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="nav-shell glass">
+        <a class="brand" href="#home" aria-label="荷包蛋官网首页">
+          <span class="brand-mark">蛋</span>
+          <span>荷包蛋官网</span>
+        </a>
+
+        <nav aria-label="主导航">
+          <ul class="nav-links" id="navLinks">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#features">功能列表</a></li>
+            <li><a href="#devices">支持设备</a></li>
+            <li><a href="https://egg.uidp.cn/shop/egg" class="shop-link" target="_blank" rel="noopener">购买卡网</a></li>
+            <li><a href="#download">下载售后</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#contact">联系官方</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="mobile-toggle" id="mobileToggle" aria-label="打开导航" aria-expanded="false">☰</button>
+          <a class="nav-cta" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">获取卡密</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <h1>荷包蛋 · 鹅鸭杀全能辅助</h1>
+          <p class="hero-subtitle">荷包蛋 · 鹅鸭杀全能辅助 | 全网最强王者归来</p>
+          <p class="hero-slogan">极致UI + 全功能绘制 + 稳定更新 + 功能卡网闭环购买</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">立即购买</a>
+            <a class="btn btn-secondary" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">获取卡密</a>
+            <button class="btn btn-secondary" id="openFloatFromHero" type="button">联系官方</button>
+          </div>
+
+          <div class="hero-tags">
+            <span class="tag">安卓模拟器</span>
+            <span class="tag">安卓真机</span>
+            <span class="tag">root / 非root</span>
+            <span class="tag">在线更新</span>
+            <span class="tag">24小时售后</span>
+          </div>
+
+          <p class="domain-line">
+            官网域名：<a href="https://egg.uidp.cn" target="_blank" rel="noopener">https://egg.uidp.cn</a>
+            <span>功能卡网：</span><a href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">https://egg.uidp.cn/shop/egg</a>
+          </p>
+        </div>
+
+        <div class="hero-visual glass reveal" data-parallax>
+          <div class="phone-screen">
+            <div class="dynamic-island"></div>
+            <div class="hud-head">
+              <strong>灵动岛可视化面板</strong>
+              <span class="status-dot" title="运行中"></span>
+            </div>
+
+            <div class="hud-panel">
+              <div class="hud-row"><span>绘制透视</span><strong>已开启</strong></div>
+              <div class="progress"><span style="--value: 92%"></span></div>
+            </div>
+            <div class="hud-panel">
+              <div class="hud-row"><span>任务进度</span><strong>78%</strong></div>
+              <div class="progress"><span style="--value: 78%; animation-delay:.2s"></span></div>
+            </div>
+            <div class="hud-panel">
+              <div class="hud-row"><span>录像回放</span><strong>待触发</strong></div>
+              <div class="progress"><span style="--value: 54%; animation-delay:.45s"></span></div>
+            </div>
+
+            <div class="mini-map" aria-hidden="true"></div>
+            <div class="floating-console">
+              <div class="console-row">🎯 狙击手自瞄</div>
+              <div class="console-row">📍 一键传送</div>
+              <div class="console-row">🌙 无视关灯</div>
+              <div class="console-row">👑 上帝视野</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="shop">
+      <div class="container">
+        <div class="shop-ribbon glass reveal">
+          <div>
+            <h2>产品官网 → 功能卡网 → 获取卡密</h2>
+            <p>所有购买、卡密与续费入口已统一到官方功能卡网，减少跳转混乱，用户可从官网直接进入购买闭环。</p>
+          </div>
+          <a class="btn btn-primary" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">进入购买卡网</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="devices">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>支持设备</h2>
+          <p>安卓模拟器与安卓真机均可使用，root 与非 root 用户都有对应方案。</p>
+        </div>
+
+        <div class="device-grid">
+          <article class="device-card reveal">
+            <div class="icon-badge">💻</div>
+            <h3>安卓模拟器</h3>
+            <p>雷电、MuMu、蓝叠等主流安卓模拟器完美兼容，适合电脑大屏操作与稳定运行。</p>
+            <div class="pill-list">
+              <span class="pill">雷电</span>
+              <span class="pill">MuMu</span>
+              <span class="pill">蓝叠</span>
+              <span class="pill">更多环境</span>
+            </div>
+          </article>
+
+          <article class="device-card reveal">
+            <div class="icon-badge">📱</div>
+            <h3>安卓手机</h3>
+            <p>安卓真机可用，root 与非 root 用户均可使用，移动端运行更灵活。</p>
+            <div class="pill-list">
+              <span class="pill">root</span>
+              <span class="pill">非 root</span>
+              <span class="pill">安卓真机</span>
+              <span class="pill">移动运行</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>核心功能列表</h2>
+          <p>保留 24 项核心功能，采用清晰网格展示。默认展示前 12 项，点击查看更多可展开完整功能。</p>
+        </div>
+
+        <div class="features-shell glass reveal">
+          <div class="features-grid collapsed" id="featureGrid"></div>
+        </div>
+
+        <div class="more-wrap">
+          <button class="btn btn-secondary" id="toggleFeatures" type="button" aria-expanded="false">查看更多功能</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="download">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>下载与售后</h2>
+          <p>版本信息动态显示，购买与卡密统一进入官方功能卡网，售后支持 24 小时响应与自助解绑。</p>
+        </div>
+
+        <div class="download-grid">
+          <article class="download-card reveal">
+            <div class="icon-badge">🚀</div>
+            <h3>当前版本</h3>
+            <div class="version-number" id="versionNumber">v3.2.5</div>
+            <p>更新日期：<span id="updateDate">动态读取中</span></p>
+            <a class="card-url" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">https://egg.uidp.cn/shop/egg</a>
+            <a class="btn btn-primary" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">获取卡密</a>
+          </article>
+
+          <article class="download-card reveal">
+            <div class="icon-badge">🛠</div>
+            <h3>售后服务</h3>
+            <p>提供 24 小时专业售后客服、自助解绑、在线更新说明与设备更换支持。遇到安装、启动、解绑、更新问题，可优先联系官方客服QQ。</p>
+            <div class="pill-list">
+              <span class="pill">24小时售后</span>
+              <span class="pill">自助解绑</span>
+              <span class="pill">在线更新</span>
+              <span class="pill">多端支持</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="support">
+      <div class="container service-layout">
+        <div class="service-main glass reveal">
+          <h2>版本特色</h2>
+          <p>极致UI体验，灵动岛风格可视化界面，全部悬浮窗设计，随意拖动不遮挡。所有版本采用在线更新，无需重复下载。已提前适配新地图（腐蚀地图）及新角色。</p>
+          <div class="stats-strip">
+            <div class="stat"><strong>24h</strong><span>专业售后客服</span></div>
+            <div class="stat"><strong>在线</strong><span>自动更新</span></div>
+            <div class="stat"><strong>自由</strong><span>自助解绑</span></div>
+          </div>
+        </div>
+
+        <div class="service-list reveal">
+          <div class="service-card"><strong>在线更新</strong><p>功能与适配持续推送，减少反复下载与版本混乱。</p></div>
+          <div class="service-card"><strong>自助解绑</strong><p>提供解绑入口，用户可按需解绑设备，更换环境更方便。</p></div>
+          <div class="service-card"><strong>官方社群</strong><p>三个官方QQ群供用户选择，客服QQ同步提供人工支持。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>官方社群与客服</h2>
+          <p>请选择任一官方QQ群加入；售后问题可联系官方客服QQ。</p>
+        </div>
+
+        <div class="contact-grid">
+          <article class="contact-card reveal">
+            <div class="icon-badge">👥</div>
+            <h3>官方QQ群</h3>
+            <p>三个官方群按顺序排列，用户可选择人数更合适的群加入。</p>
+            <div class="contact-list" id="groupList"></div>
+          </article>
+
+          <article class="contact-card reveal">
+            <div class="icon-badge">🎧</div>
+            <h3>官方客服QQ</h3>
+            <p>使用腾讯QQ推广/WPA入口打开对话；如浏览器拦截，可复制号码手动添加。</p>
+            <div class="contact-list" id="serviceList"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head center reveal">
+          <h2>FAQ</h2>
+          <p>购买、使用风险、设备解绑与售后流程说明。</p>
+        </div>
+
+        <div class="faq-list reveal">
+          <div class="faq-item open">
+            <button class="faq-q" type="button"><span>root和非root用户使用有什么区别？</span><span>⌄</span></button>
+            <div class="faq-a"><p>root 环境权限更完整，兼容性和稳定性通常更高；非 root 方案更方便，适合不想改动手机环境的用户。具体方案以官方售后指引为准。</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button"><span>会封号吗？</span><span>⌄</span></button>
+            <div class="faq-a"><p>任何第三方工具均有风险，请用小号娱乐，自行承担账号与设备风险。</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button"><span>卡密在哪里购买？</span><span>⌄</span></button>
+            <div class="faq-a"><p>卡密统一在官方功能卡网购买：<a href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener" style="color:var(--gold);font-weight:950;">https://egg.uidp.cn/shop/egg</a>。</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" type="button"><span>售后支持与设备解绑流程？</span><span>⌄</span></button>
+            <div class="faq-a"><p>用户可通过右下角悬浮客服入口联系官方客服QQ，或加入官方QQ群咨询。设备解绑按售后提供的自助解绑地址操作。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-tools">
+    <button class="perf-toggle" id="performanceToggle" type="button" aria-pressed="false">性能模式：高</button>
+
+    <div class="float-panel glass" id="floatPanel" aria-label="悬浮客服">
+      <div class="float-head">
+        <strong>官方客服入口</strong>
+        <button class="float-close" id="floatClose" type="button" aria-label="关闭客服面板">×</button>
+      </div>
+
+      <div class="float-section">
+        <h4>官方QQ群</h4>
+        <div class="float-links" id="floatGroups"></div>
+      </div>
+
+      <div class="float-section">
+        <h4>客服QQ</h4>
+        <div class="float-links" id="floatServices"></div>
+      </div>
+
+      <a class="btn btn-primary" href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener" style="width:100%;margin-top:4px;">前往购买卡网</a>
+    </div>
+
+    <button class="float-main" id="floatMain" type="button">在线客服</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>© 荷包蛋 All Rights Reserved</strong>
+        <p>官网域名：https://egg.uidp.cn</p>
+        <p>功能卡网：https://egg.uidp.cn/shop/egg</p>
+        <p>官方QQ群①：869082894　官方QQ群②：862207456　官方QQ群③：1057236811</p>
+        <p>客服QQ①：2551037918　客服QQ②：2078508593</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="javascript:void(0)">隐私政策</a>
+        <a href="javascript:void(0)">用户协议</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://egg.uidp.cn/shop/egg" target="_blank" rel="noopener">购买卡网</a>
+      </div>
+
+      <p class="disclaimer">免责声明：本工具仅供学习交流，请勿用于违规行为。任何第三方工具均有风险，请遵守相关平台规则并自行承担使用后果。</p>
+    </div>
+  </footer>
+
+  <div class="copy-toast" id="copyToast">已复制</div>
+
+  <script>
+    document.body.classList.remove("no-js");
+
+    const SHOP_URL = "https://egg.uidp.cn/shop/egg";
+    const VERSION = "v3.2.5";
+    const GROUPS = [
+      { label: "官方QQ群①", number: "869082894" },
+      { label: "官方QQ群②", number: "862207456" },
+      { label: "官方QQ群③", number: "1057236811" }
+    ];
+    const SERVICES = [
+      { label: "客服QQ①", number: "2551037918" },
+      { label: "客服QQ②", number: "2078508593" }
+    ];
+    const FEATURES = [
+      ["✨", "全悬浮窗 + 灵动岛可视化界面", "所有功能通过悬浮窗操作，可自定义UI，随意拖动，丝滑体验。"],
+      ["🎯", "狙击手自瞄", "默认开启，狙击体验更直接。"],
+      ["📹", "自动录像回放", "击杀自动录屏，可回放拉腿。"],
+      ["🏃", "无视移动限制", "边走边做任务、边狙击、远程拉会议。"],
+      ["📢", "飞船无限喊话", "默认开启，喊话更自由。"],
+      ["⚡", "多倍加速", "自由切换节奏，提升行动效率。"],
+      ["⏩", "秒完成任务", "任务流程快速处理，减少等待。"],
+      ["🌀", "传送任务", "任务点之间快速移动。"],
+      ["🌙", "无视狼人关灯", "黑暗状态下保持稳定视野。"],
+      ["🏠", "去除屋顶", "默认开启，遮挡区域更清晰。"],
+      ["☠️", "会议自动显示死亡具体死法", "自动显示死亡详情，全网独家。"],
+      ["👀", "死亡观战透视狼人", "死亡观战时可查看狼人动向。"],
+      ["💀", "无视死亡", "死亡后仍能踩布谷鸟蛋、全地图踩蛋。"],
+      ["🔊", "法天象地 + 技能范围加倍 + 远程刀人", "扩大技能范围，远程操作更强。"],
+      ["🌟", "皮肤美化功能", "外观美化功能，全网独家。"],
+      ["📍", "传送至拉铃位置", "会议拉铃点快速抵达。"],
+      ["⚡", "小范围瞬移", "短距离快速位移，操作更灵活。"],
+      ["📊", "实时任务进度显示", "任务完成情况实时掌握。"],
+      ["🚀", "任务点一键传送", "快速到达指定任务点。"],
+      ["🌫️", "除雾透视", "巫医不开技能远看尸体。"],
+      ["👥", "监控显示实时人数", "监控界面实时显示人数变化。"],
+      ["☀️", "全地图增亮", "地图亮度增强，暗区更清楚。"],
+      ["🪦", "尸体位置 + 布谷鸟蛋显示", "关键位置清晰标记。"],
+      ["👑", "上帝视野", "全图视野，地图信息尽收眼底。"]
+    ];
+
+    const featureGrid = document.getElementById("featureGrid");
+    const toggleFeatures = document.getElementById("toggleFeatures");
+    const navLinks = document.getElementById("navLinks");
+    const mobileToggle = document.getElementById("mobileToggle");
+    const floatPanel = document.getElementById("floatPanel");
+    const floatMain = document.getElementById("floatMain");
+    const floatClose = document.getElementById("floatClose");
+    const copyToast = document.getElementById("copyToast");
+    const performanceToggle = document.getElementById("performanceToggle");
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let rafId = 0;
+    let particles = [];
+    let lowPower = localStorage.getItem("eggLowPower") === "1";
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    function qqHref(number) {
+      return `https://wpa.qq.com/msgrd?v=3&uin=${encodeURIComponent(number)}&site=egg.uidp.cn&menu=yes`;
+    }
+
+    function copyText(text) {
+      const done = () => showToast(`已复制：${text}`);
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+      } else {
+        fallbackCopy(text, done);
+      }
+    }
+
+    function fallbackCopy(text, callback) {
+      const input = document.createElement("textarea");
+      input.value = text;
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      input.remove();
+      callback();
+    }
+
+    function showToast(text) {
+      copyToast.textContent = text;
+      copyToast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => copyToast.classList.remove("show"), 1600);
+    }
+
+    function renderFeatures() {
+      featureGrid.innerHTML = FEATURES.map(([icon, title, desc], index) => `
+        <article class="feature-card ${index >= 12 ? "is-extra" : ""}">
+          <div class="feature-icon">${icon}</div>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(desc)}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderContacts() {
+      const groupHtml = GROUPS.map((item) => `
+        <div class="contact-row">
+          <span>${item.label}：${item.number}</span>
+          <button class="chip-button" type="button" data-copy="${item.number}">复制</button>
+        </div>
+      `).join("");
+
+      const serviceHtml = SERVICES.map((item, index) => `
+        <div class="contact-row">
+          <span>${item.label}：${item.number}</span>
+          <a class="chip-button qq-service" id="qq-wpa-${index}" href="${qqHref(item.number)}" target="_blank" rel="noopener" data-qq="${item.number}">对话</a>
+        </div>
+      `).join("");
+
+      document.getElementById("groupList").innerHTML = groupHtml;
+      document.getElementById("serviceList").innerHTML = serviceHtml;
+      document.getElementById("floatGroups").innerHTML = GROUPS.map((item) => `
+        <button type="button" data-copy="${item.number}"><span>${item.label}</span><strong>${item.number}</strong></button>
+      `).join("");
+      document.getElementById("floatServices").innerHTML = SERVICES.map((item, index) => `
+        <a id="float-qq-wpa-${index}" href="${qqHref(item.number)}" target="_blank" rel="noopener" data-qq="${item.number}">
+          <span>${item.label}</span><strong>${item.number}</strong>
+        </a>
+      `).join("");
+    }
+
+    function initQQWPA() {
+      if (!window.BizQQWPA || !window.BizQQWPA.addCustom) return;
+      SERVICES.forEach((item, index) => {
+        ["qq-wpa-", "float-qq-wpa-"].forEach((prefix) => {
+          const selector = `${prefix}${index}`;
+          if (document.getElementById(selector)) {
+            window.BizQQWPA.addCustom({
+              aty: "0",
+              a: "0",
+              nameAccount: item.number,
+              selector
+            });
+          }
+        });
+      });
+    }
+
+    function loadScript(src, options = {}) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        Object.entries(options).forEach(([key, value]) => script.setAttribute(key, value));
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    function shouldLoadExternalScripts() {
+      return location.protocol === "http:" || location.protocol === "https:";
+    }
+
+    function loadAnimationRuntime() {
+      if (!shouldLoadExternalScripts() || lowPower) {
+        initGsap();
+        return;
+      }
+
+      loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js")
+        .then(() => loadScript("https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"))
+        .then(initGsap)
+        .catch(initFallbackReveal);
+    }
+
+    function loadQQRuntime() {
+      if (!shouldLoadExternalScripts()) return;
+      loadScript("https://wpa.b.qq.com/cgi/wpa.php", { charset: "utf-8" })
+        .then(() => setTimeout(initQQWPA, 500))
+        .catch(() => {});
+    }
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      createParticles();
+    }
+
+    function createParticles() {
+      const count = lowPower ? 26 : Math.min(92, Math.floor(window.innerWidth / 16));
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2.4 + .8,
+        vx: (Math.random() - .5) * .36,
+        vy: (Math.random() - .5) * .36,
+        alpha: Math.random() * .5 + .16
+      }));
+    }
+
+    function drawParticles() {
+      if (lowPower) return;
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
+      gradient.addColorStop(0, "rgba(245,166,35,.78)");
+      gradient.addColorStop(1, "rgba(255,122,34,.55)");
+
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < -20) p.x = window.innerWidth + 20;
+        if (p.x > window.innerWidth + 20) p.x = -20;
+        if (p.y < -20) p.y = window.innerHeight + 20;
+        if (p.y > window.innerHeight + 20) p.y = -20;
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(245,166,35,${p.alpha})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j += 1) {
+          const q = particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 112) {
+            ctx.strokeStyle = `rgba(245,166,35,${(1 - distance / 112) * .13})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.stroke();
+          }
+        }
+      });
+
+      ctx.strokeStyle = gradient;
+      rafId = requestAnimationFrame(drawParticles);
+    }
+
+    function startParticles() {
+      cancelAnimationFrame(rafId);
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      if (!lowPower) drawParticles();
+    }
+
+    function setPerformanceMode(value) {
+      lowPower = value;
+      document.body.classList.toggle("low-power", lowPower);
+      performanceToggle.textContent = lowPower ? "性能模式：低" : "性能模式：高";
+      performanceToggle.setAttribute("aria-pressed", String(lowPower));
+      localStorage.setItem("eggLowPower", lowPower ? "1" : "0");
+      resizeCanvas();
+      startParticles();
+      if (window.ScrollTrigger) {
+        window.ScrollTrigger.getAll().forEach((trigger) => lowPower ? trigger.disable(false) : trigger.enable());
+      }
+    }
+
+    function initFallbackReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      }, { threshold: .12 });
+      document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+    }
+
+    function initGsap() {
+      if (!window.gsap || !window.ScrollTrigger || lowPower) {
+        initFallbackReveal();
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.utils.toArray(".reveal").forEach((item) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 84%",
+          once: true,
+          onEnter: () => {
+            gsap.from(item, {
+              y: 34,
+              opacity: 0,
+              scale: .985,
+              duration: .82,
+              ease: "power3.out",
+              clearProps: "transform,opacity"
+            });
+          }
+        });
+      });
+
+      gsap.utils.toArray("[data-parallax]").forEach((item) => {
+        gsap.to(item, {
+          y: -42,
+          rotate: -1.4,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: true
+          }
+        });
+      });
+    }
+
+    function bindEvents() {
+      mobileToggle.addEventListener("click", () => {
+        const isOpen = navLinks.classList.toggle("open");
+        mobileToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("open");
+          mobileToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      toggleFeatures.addEventListener("click", () => {
+        const collapsed = featureGrid.classList.toggle("collapsed");
+        toggleFeatures.textContent = collapsed ? "查看更多功能" : "收起功能";
+        toggleFeatures.setAttribute("aria-expanded", String(!collapsed));
+      });
+
+      document.querySelectorAll(".faq-q").forEach((button) => {
+        button.addEventListener("click", () => button.closest(".faq-item").classList.toggle("open"));
+      });
+
+      document.body.addEventListener("click", (event) => {
+        const copyButton = event.target.closest("[data-copy]");
+        if (copyButton) copyText(copyButton.getAttribute("data-copy"));
+      });
+
+      floatMain.addEventListener("click", () => floatPanel.classList.toggle("open"));
+      floatClose.addEventListener("click", () => floatPanel.classList.remove("open"));
+      document.getElementById("openFloatFromHero").addEventListener("click", () => floatPanel.classList.add("open"));
+      performanceToggle.addEventListener("click", () => setPerformanceMode(!lowPower));
+      window.addEventListener("resize", resizeCanvas);
+    }
+
+    function initVersion() {
+      document.getElementById("versionNumber").textContent = VERSION;
+      document.getElementById("updateDate").textContent = new Date().toLocaleDateString("zh-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+    }
+
+    renderFeatures();
+    renderContacts();
+    initVersion();
+    bindEvents();
+    resizeCanvas();
+    setPerformanceMode(lowPower);
+
+    window.addEventListener("load", () => {
+      loadAnimationRuntime();
+      loadQQRuntime();
+    });
+
+    console.log("荷包蛋官网加载完成，最强鹅鸭杀辅助已就绪");
+  </script>
+</body>
+</html>
