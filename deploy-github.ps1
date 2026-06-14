@@ -108,7 +108,12 @@ if ($status) {
 }
 
 $originUrl = "https://x-access-token:{0}@github.com/{1}/{2}.git" -f $token, $Owner, $RepoName
-if ((git remote get-url origin 2>$null) -match "https://") {
+try {
+    $originRemote = git remote get-url origin 2>$null
+} catch {
+    $originRemote = $null
+}
+if ($originRemote) {
     git remote set-url origin $originUrl
 } else {
     git remote add origin $originUrl
